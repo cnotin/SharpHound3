@@ -373,6 +373,32 @@ namespace SharpHound3.Tasks
                         }
                     }
                 }
+
+                if (wrapper is OU && rights.HasFlag(ActiveDirectoryRights.CreateChild))
+                {
+                    if (objectAceType == "bf967aba-0de6-11d0-a285-00aa003049e2")
+                    {
+                        aces.Add(new ACL
+                        {
+                            AceType = "CreateChild",
+                            RightName = "User",
+                            PrincipalSID = finalSid,
+                            PrincipalType = type,
+                            IsInherited = isInherited
+                        });
+                    }
+                    else if (objectAceType == "bf967a86-0de6-11d0-a285-00aa003049e2")
+                    {
+                        aces.Add(new ACL
+                        {
+                            AceType = "CreateChild",
+                            RightName = "Computer",
+                            PrincipalSID = finalSid,
+                            PrincipalType = type,
+                            IsInherited = isInherited
+                        });
+                    }
+                }
             }
 
             return aces;
